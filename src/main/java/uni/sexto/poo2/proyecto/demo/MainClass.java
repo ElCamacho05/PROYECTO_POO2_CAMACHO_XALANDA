@@ -18,18 +18,25 @@ public class MainClass {
 
         // Download path
 
+        /*
 
         int i = 0;
+
         for (Integer key : URLHashMap.keySet()) {
             System.out.println ("Key " + key + " Value " + URLHashMap.get (key));
 
             // Set URL and OUTPUT PATH for the downloader
             String url = URLHashMap.get (key);
-            String OUTPUT_PATH = "demo/src/main/java/uni/sexto/poo2/proyecto/demo/downloads/demo_" + i;
+            String OUTPUT_PATH = "demo/src/main/java/uni/sexto/poo2/proyecto/demo/downloads/image_" + i;
 
             WebDownloader.downloadWithHttpClientAsync(url, OUTPUT_PATH);
 
             i++;
         }
+
+        */
+
+        // Process images in /downloads directory to /filtered
+        ImageProcessor.processImagesFromDirectory();
     }
 }
