@@ -6,15 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.*;
 
 public class ReadResources {
 
-    public static Deque<String> ReadFileToDeque (String pathname, String filename) throws FileNotFoundException, IOException {
-
-        //String separator = "Data" + File.separator + "Stations" + File.separator + filename;
-        //System.out.println(separator);
+    public static HashMap<Integer, String> ReadFileToMap (String pathname, String filename) throws FileNotFoundException, IOException {
 
         // File reception
         File file = new File (pathname + filename);
@@ -24,20 +20,20 @@ public class ReadResources {
 
         String line;
 
-        // Collection deque for returning urls
-        Deque<String> deque = new ArrayDeque<>();
+        // Collection HashMap for returning urls
+        HashMap<Integer, String> URLmap = new HashMap<> ();
 
-        // Cicling the urls and appending to deque
+        // Cicling the urls and adding into HashMap
+
+        int i = 0;
         while ((line = buff.readLine ()) != null) {
-            deque.offerLast(line);
+            URLmap.put(i, line);
+            i++;
         }
-
-        // Printing of all the lines
-
 
         // File safe closing
         buff.close ();
         fileReader.close ();
-        return deque;
+        return URLmap;
     }
 }
