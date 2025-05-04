@@ -12,6 +12,7 @@ public class ImageProcessor {
     private static final String INPUT_DIR = "demo/src/main/java/uni/sexto/poo2/proyecto/demo/downloads";
     private static final String OUTPUT_DIR = "demo/src/main/java/uni/sexto/poo2/proyecto/demo/filtered";
 
+    // Executor definition with 5 elements in thread pool
     private static final ExecutorService processingExecutor = Executors.newFixedThreadPool(5);
 
     public static void processImagesFromDirectory() throws IOException {
@@ -20,11 +21,20 @@ public class ImageProcessor {
                 name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png"));
 
         // If there's no files in directory, return to MeinClass
-        if (imageFiles == null || imageFiles.length == 0) {
+        while (imageFiles == null || imageFiles.length == 0) {
             System.out.println("Files not found in: " + INPUT_DIR);
-            return;
+            System.out.println("Waiting 3 seconds for images to be processed...");
+
+            //Waiting and retrying if new files are just added
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            imageFiles = dir.listFiles((d, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png"));
         }
 
+        // for each file, add a
         for (File file : imageFiles) {
             processingExecutor.submit(() -> {
                 try {
@@ -38,7 +48,7 @@ public class ImageProcessor {
                     saveFilteredImage(applyBlackAndWhite(image), baseName + "_bw", ext);
                     saveFilteredImage(applySharpen(image), baseName + "_sharpen", ext);
 
-                    System.out.println("Processing: " + name);
+                    System.out.println("Processing: " + name + "via" + Thread.currentThread ().getName ());
 
                 } catch (IOException e) {
                     System.err.println("Error while processing image: " + file.getName());
@@ -49,12 +59,13 @@ public class ImageProcessor {
         shutdownExecutor();
     }
 
-    //Save file in specific directory
+    // Save file in specific directory
     private static void saveFilteredImage(BufferedImage img, String name, String ext) throws IOException {
         File outFile = new File(OUTPUT_DIR, name + "." + ext);
         ImageIO.write(img, ext, outFile);
     }
 
+    // Black and White filter
     private static BufferedImage applyBlackAndWhite(BufferedImage original) {
         BufferedImage bw = new BufferedImage(original.getWidth(), original.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
         Graphics g = bw.getGraphics();
@@ -63,6 +74,7 @@ public class ImageProcessor {
         return bw;
     }
 
+    // Sepia filter
     private static BufferedImage applySepia(BufferedImage img) {
         BufferedImage sepia = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
         for (int y = 0; y < img.getHeight(); y++) {
@@ -77,6 +89,7 @@ public class ImageProcessor {
         return sepia;
     }
 
+    // Sharpen filter
     private static BufferedImage applySharpen(BufferedImage img) {
         float[] kernel = {
                 0.f, -1.f, 0.f,
@@ -87,6 +100,7 @@ public class ImageProcessor {
         return op.filter(img, null);
     }
 
+    // shutdown Executor
     private static void shutdownExecutor() {
         processingExecutor.shutdown();
     }

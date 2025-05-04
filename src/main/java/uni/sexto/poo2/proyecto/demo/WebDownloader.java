@@ -9,6 +9,7 @@ import java.net.http.HttpResponse;
 
 public class WebDownloader {
 
+
     public static void downloadWithHttpClientAsync(String url, String outputPathWithoutExt) {
         HttpClient client = HttpClient.newBuilder()
                 .followRedirects(HttpClient.Redirect.ALWAYS) // URLs from picsum always redirect
@@ -46,14 +47,12 @@ public class WebDownloader {
                     return null;
                 });
 
-        // Thread sleep (just in case...)
-
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        // Thread sleep (just in case...)
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
