@@ -9,6 +9,19 @@ import java.net.http.HttpResponse;
 
 public class WebDownloader {
 
+    // Test Class
+    public static void main(String[] args) {
+        String testUrl = "https://firebasestorage.googleapis.com/v0/b/departmentstorebackend.appspot.com/o/images%2F53405989488_380a600691.png?alt=media&token=f6eacae0-9a9b-4a96-97f8-093c8fc963fe";
+        String output = "demo/src/main/java/uni/sexto/poo2/proyecto/demo/downloads/demo_image";
+
+        downloadWithHttpClientAsync(testUrl, output);
+        // Thread sleep (just in case...)
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void downloadWithHttpClientAsync(String url, String outputPathWithoutExt) {
         HttpClient client = HttpClient.newBuilder()
@@ -33,6 +46,7 @@ public class WebDownloader {
                     } else if (contentType.contains("jpeg") || contentType.contains("jpg")) {
                         extension = ".jpg";
                     }
+                    System.out.println(extension);
                     String finalPath = outputPathWithoutExt + extension;
 
                     try (FileOutputStream fos = new FileOutputStream(finalPath)) {
@@ -47,20 +61,7 @@ public class WebDownloader {
                     return null;
                 });
 
-//        // Thread sleep (just in case...)
-//        try {
-//            Thread.sleep(3000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
 
-    }
 
-    // Test Class
-    public static void main(String[] args) {
-        String testUrl = "https://firebasestorage.googleapis.com/v0/b/departmentstorebackend.appspot.com/o/images%2F53405989488_380a600691.png?alt=media&token=f6eacae0-9a9b-4a96-97f8-093c8fc963fe";
-        String output = "demo/src/main/java/uni/sexto/poo2/proyecto/demo/downloads/demo_image";
-
-        downloadWithHttpClientAsync(testUrl, output);
     }
 }

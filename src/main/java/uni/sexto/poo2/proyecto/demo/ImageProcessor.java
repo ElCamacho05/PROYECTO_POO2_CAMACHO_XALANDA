@@ -11,7 +11,7 @@ public class ImageProcessor {
 
     private static final String INPUT_DIR = "demo/src/main/java/uni/sexto/poo2/proyecto/demo/downloads";
     private static final String OUTPUT_DIR = "demo/src/main/java/uni/sexto/poo2/proyecto/demo/filtered";
-
+    private static final String TEST_IMAGE_NAME = "demo_image.png";
     // Executor definition with 5 elements in thread pool
     private static final ExecutorService processingExecutor = Executors.newFixedThreadPool(5);
 
@@ -103,5 +103,24 @@ public class ImageProcessor {
     // shutdown Executor
     private static void shutdownExecutor() {
         processingExecutor.shutdown();
+    }
+
+    public static void main(String[] args) {
+        try {
+            File testImage = new File(INPUT_DIR, TEST_IMAGE_NAME);
+            BufferedImage image = ImageIO.read(testImage);
+
+            String baseName = TEST_IMAGE_NAME.substring(0, TEST_IMAGE_NAME.lastIndexOf('.'));
+            String ext = TEST_IMAGE_NAME.substring(TEST_IMAGE_NAME.lastIndexOf('.') + 1);
+
+            saveFilteredImage(applySepia(image), baseName + "_sepia", ext);
+            saveFilteredImage(applyBlackAndWhite(image), baseName + "_bw", ext);
+            saveFilteredImage(applySharpen(image), baseName + "_sharpen", ext);
+
+            System.out.println("Filtros aplicados a demo_image.png");
+
+        } catch (IOException e) {
+            System.err.println("Error al procesar demo_image.png: " + e.getMessage());
+        }
     }
 }
