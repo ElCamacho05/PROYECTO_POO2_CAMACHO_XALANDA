@@ -24,9 +24,11 @@ public class ReadResources {
         HashMap<Integer, String> URLmap = new HashMap<> ();
 
         // Cicling the urls and adding into HashMap
-
         int i = 0;
         while ((line = buff.readLine ()) != null) {
+            if (line.equals ("")) {
+                continue;
+            }
             URLmap.put(i, line);
             i++;
         }

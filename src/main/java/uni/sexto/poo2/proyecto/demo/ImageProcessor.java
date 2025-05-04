@@ -28,6 +28,7 @@ public class ImageProcessor {
         for (File file : imageFiles) {
             processingExecutor.submit(() -> {
                 try {
+                    // Load image into a BufferedImage variable fo each element in dir
                     BufferedImage image = ImageIO.read(file);
                     String name = file.getName();
                     String baseName = name.substring(0, name.lastIndexOf('.'));
@@ -48,6 +49,7 @@ public class ImageProcessor {
         shutdownExecutor();
     }
 
+    //Save file in specific directory
     private static void saveFilteredImage(BufferedImage img, String name, String ext) throws IOException {
         File outFile = new File(OUTPUT_DIR, name + "." + ext);
         ImageIO.write(img, ext, outFile);
@@ -87,12 +89,5 @@ public class ImageProcessor {
 
     private static void shutdownExecutor() {
         processingExecutor.shutdown();
-        try {
-            if (!processingExecutor.awaitTermination(2, TimeUnit.MINUTES)) {
-                processingExecutor.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            processingExecutor.shutdownNow();
-        }
     }
 }

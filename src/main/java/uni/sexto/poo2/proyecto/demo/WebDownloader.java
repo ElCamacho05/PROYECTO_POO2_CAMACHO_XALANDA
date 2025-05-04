@@ -11,7 +11,7 @@ public class WebDownloader {
 
     public static void downloadWithHttpClientAsync(String url, String outputPathWithoutExt) {
         HttpClient client = HttpClient.newBuilder()
-                .followRedirects(HttpClient.Redirect.ALWAYS) // URL from picsum always redirect
+                .followRedirects(HttpClient.Redirect.ALWAYS) // URLs from picsum always redirect
                 .build();
 
         HttpRequest request = HttpRequest.newBuilder(URI.create(url))
